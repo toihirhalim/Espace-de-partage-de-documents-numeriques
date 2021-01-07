@@ -22,3 +22,9 @@ thématique.
 JPA ».  
 - Développement de la partie Front End « Framework Java Script (Node JS, Angular, react JS ...),
 Bootstrap, Jquery, AJAX».  
+  
+### things that need to be done :  
+- [x] create a git hub repo  
+- [ ] UML diagrams modeling  
+- [ ] Backend with Spring-Boot  
+- [ ] Frontend with React  
