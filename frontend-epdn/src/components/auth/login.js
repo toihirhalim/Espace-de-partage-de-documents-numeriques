@@ -1,35 +1,31 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './login.css'
 import PropTypes from 'prop-types';
+import { getLocalToken, setLocalToken, deleteLocalToken } from './RemeberMe';
+import loginUser from './AuthApi';
 
-async function loginUser(credentials) {
-    return fetch('http://localhost:8080/api/users/login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(credentials)
-    })
-        .then(res => res.json())
-        .then(json => json.data)
-}
 
 export default function Login({ setToken }) {
-    const [username, setUserName] = useState();
-    const [password, setPassword] = useState();
+    const [username, setUserName] = useState("");
+    const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [remeberMe, setRemeberMe] = useState({ checked: false });
 
     const handleSubmit = async e => {
         e.preventDefault();
         setError("");
-        console.log(remeberMe.checked)
+
         const token = await loginUser({
             username,
             password
         });
 
         if (token) {
+            if (remeberMe.checked) {
+                setLocalToken({ "username": token.username, "password": token.password })
+            } else {
+                deleteLocalToken();
+            }
             setToken(token);
         } else {
             setError("Username or Password is invalid, Please verify information before submition.");
@@ -37,17 +33,26 @@ export default function Login({ setToken }) {
 
     }
 
+    useEffect(() => {
+        const LocalToken = getLocalToken();
+        if (LocalToken) {
+            setUserName(LocalToken.username);
+            setPassword(LocalToken.password);
+            setRemeberMe({ checked: true })
+        }
+    }, []);
+
     return (
         <div className="login-wrapper">
             <h1>Please Log In</h1>
             <form onSubmit={handleSubmit}>
                 <label>
                     <p>Username</p>
-                    <input type="text" onChange={e => setUserName(e.target.value)} />
+                    <input type="text" value={username} onChange={e => setUserName(e.target.value)} required />
                 </label>
                 <label>
                     <p>Password</p>
-                    <input type="password" onChange={e => setPassword(e.target.value)} />
+                    <input type="password" value={password} onChange={e => setPassword(e.target.value)} required />
                 </label>
                 <div>
                     <label>

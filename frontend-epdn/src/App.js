@@ -6,7 +6,7 @@ import Acceuil from './components/dashboard/Acceuil'
 import useToken from './components/auth/useToken';
 
 function App() {
-  const { token, setToken } = useToken();
+  const { token, setToken, logout } = useToken();
 
   if (!token) {
     return <Login setToken={setToken} />
@@ -15,6 +15,7 @@ function App() {
   return (
     <div className="wrapper">
       <h1>Application</h1>
+      <button onClick={logout}>Log Out</button>
       <BrowserRouter>
         <Switch>
           <Route path="/acceuil">
