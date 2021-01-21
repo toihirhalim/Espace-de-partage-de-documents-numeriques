@@ -18,10 +18,12 @@ export default function Login({ setToken }) {
     const [username, setUserName] = useState();
     const [password, setPassword] = useState();
     const [error, setError] = useState("");
+    const [remeberMe, setRemeberMe] = useState({ checked: false });
 
     const handleSubmit = async e => {
         e.preventDefault();
         setError("");
+        console.log(remeberMe.checked)
         const token = await loginUser({
             username,
             password
@@ -34,7 +36,6 @@ export default function Login({ setToken }) {
         }
 
     }
-
 
     return (
         <div className="login-wrapper">
@@ -52,7 +53,7 @@ export default function Login({ setToken }) {
                     <label>
                         <p>
                             Remeber me :
-                        <input type="checkbox" />
+                        <input type="checkbox" checked={remeberMe.checked} onChange={e => setRemeberMe({ checked: !remeberMe.checked })} />
                         </p>
                     </label>
                 </div>
