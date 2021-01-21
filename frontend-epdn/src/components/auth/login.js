@@ -3,27 +3,36 @@ import './login.css'
 import PropTypes from 'prop-types';
 
 async function loginUser(credentials) {
-    return fetch('http://localhost:8080/login', {
+    return fetch('http://localhost:8080/api/users/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(credentials)
     })
-        .then(data => data.json())
+        .then(res => res.json())
+        .then(json => json.data)
 }
 
 export default function Login({ setToken }) {
     const [username, setUserName] = useState();
     const [password, setPassword] = useState();
+    const [error, setError] = useState("");
 
     const handleSubmit = async e => {
         e.preventDefault();
+        setError("");
         const token = await loginUser({
             username,
             password
         });
-        setToken(token);
+
+        if (token) {
+            setToken(token);
+        } else {
+            setError("Username or Password is invalid, Please verify information before submition.");
+        }
+
     }
 
 
@@ -40,9 +49,20 @@ export default function Login({ setToken }) {
                     <input type="password" onChange={e => setPassword(e.target.value)} />
                 </label>
                 <div>
+                    <label>
+                        <p>
+                            Remeber me :
+                        <input type="checkbox" />
+                        </p>
+                    </label>
+                </div>
+                <div>
                     <button type="submit">Submit</button>
                 </div>
             </form>
+            <div>
+                <p className="error">{error}</p>
+            </div>
         </div>
     )
 }
