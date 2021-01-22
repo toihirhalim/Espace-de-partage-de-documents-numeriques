@@ -28,7 +28,7 @@ export default function Login({ setToken }) {
             }
             setToken(token);
         } else {
-            setError("Username or Password is invalid, Please verify information before submition.");
+            setError("Username or Password is invalid !");
         }
 
     }
@@ -44,30 +44,37 @@ export default function Login({ setToken }) {
 
     return (
         <div className="login-wrapper">
-            <h1>Please Log In</h1>
-            <form onSubmit={handleSubmit}>
-                <label>
-                    <p>Username</p>
-                    <input type="text" value={username} onChange={e => setUserName(e.target.value)} required />
-                </label>
-                <label>
-                    <p>Password</p>
-                    <input type="password" value={password} onChange={e => setPassword(e.target.value)} required />
-                </label>
-                <div>
+            <div className="container">
+                <h1 className="title">Log In</h1>
+                <form onSubmit={handleSubmit}>
                     <label>
-                        <p>
-                            Remeber me :
-                        <input type="checkbox" checked={remeberMe.checked} onChange={e => setRemeberMe({ checked: !remeberMe.checked })} />
-                        </p>
+                        <p>Username :</p>
+                        <input type="text" className="inputs" value={username} onChange={e => setUserName(e.target.value)} required />
                     </label>
-                </div>
-                <div>
-                    <button type="submit">Submit</button>
-                </div>
-            </form>
-            <div>
-                <p className="error">{error}</p>
+                    <label>
+                        <p>Password :</p>
+                        <input type="password" className="inputs" value={password} onChange={e => setPassword(e.target.value)} required />
+                    </label>
+                    <div>
+                        <label>
+                            <p>
+                                Remeber me :
+                        <input type="checkbox" checked={remeberMe.checked} onChange={e => setRemeberMe({ checked: !remeberMe.checked })} />
+                            </p>
+                        </label>
+                    </div>
+                    <div className="button-container">
+                        <button className="button" type="submit">Login</button>
+                    </div>
+                </form>
+
+                {
+                    error &&
+                    <div className="error-container">
+                        <p className="error">{error}</p>
+                    </div>
+                }
+
             </div>
         </div>
     )
