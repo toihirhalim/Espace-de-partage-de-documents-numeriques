@@ -59,7 +59,7 @@ export default function Login({ setToken, setShowLogin }) {
                         <label>
                             <p>
                                 Remeber me :
-                        <input type="checkbox" checked={remeberMe.checked} onChange={e => setRemeberMe({ checked: !remeberMe.checked })} />
+                                <input type="checkbox" checked={remeberMe.checked} onChange={e => setRemeberMe({ checked: !remeberMe.checked })} />
                             </p>
                         </label>
                     </div>
