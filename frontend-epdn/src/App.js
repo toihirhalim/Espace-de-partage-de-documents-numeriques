@@ -15,7 +15,6 @@ function App() {
   return (
     <div className="wrapper">
       <h1>Application</h1>
-      <button onClick={logout}>Log Out</button>
       <BrowserRouter>
         <Switch>
           <Route path="/acceuil">
@@ -26,6 +25,7 @@ function App() {
           </Route>
         </Switch>
       </BrowserRouter>
+      <button className="logout-btn" onClick={logout}>Log Out</button>
     </div>
   );
 }
