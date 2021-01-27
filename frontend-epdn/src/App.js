@@ -1,15 +1,15 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import './App.css';
-import Login from './components/auth/login';
 import Acceuil from './components/dashboard/Acceuil'
 import useToken from './components/auth/useToken';
+import Auth from './components/auth/Auth';
 
 function App() {
   const { token, setToken, logout } = useToken();
 
   if (!token) {
-    return <Login setToken={setToken} />
+    return <Auth setToken={setToken} />
   }
 
   return (
