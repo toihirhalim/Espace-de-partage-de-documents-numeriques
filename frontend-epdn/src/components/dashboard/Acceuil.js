@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
-//import { queryApi } from './api';
+import graphQlApi from './graphQlApi'
 
 export default function Acceuil() {
     const [users, setUsers] = useState([]);
     const [user, setUser] = useState();
     const [username, setUsername] = useState("");
 
-    const handleClick = e => {
+    const handleClick = async e => {
+        e.preventDefault();
         let query = `
             query {
                 users{
@@ -16,21 +17,16 @@ export default function Acceuil() {
                 }
             }
         `
-        fetch('http://localhost:8000/', {
-            method: 'POST',
-            headers: { "Content-type": "application/json" },
-            body: JSON.stringify({
-                query: query
-            })
-        })
-            .then(res => res.json())
-            .then(json => {
-                setUsers(json.data.users)
-                return json.data
-            })
+        const data = await graphQlApi(query)
+
+        if (data.users) {
+            setUsers(data.users)
+        }
+
     }
 
-    const getUser = e => {
+    const getUser = async e => {
+        e.preventDefault();
         let query = `
             query {
                 user(username: "` + username + `"){
@@ -44,19 +40,10 @@ export default function Acceuil() {
                 }
             }
         `
-
-        fetch('http://localhost:8000/', {
-            method: 'POST',
-            headers: { "Content-type": "application/json" },
-            body: JSON.stringify({
-                query: query
-            })
-        })
-            .then(res => res.json())
-            .then(json => {
-                setUser(json.data.user)
-                return json.data
-            })
+        const data = await graphQlApi(query);
+        if (data.user) {
+            setUser(data.user)
+        }
     }
 
 
@@ -70,7 +57,7 @@ export default function Acceuil() {
                     <button onClick={handleClick}>get users</button>
                     {users.map(user => {
                         return (
-                            <p key={user.id}>username : {user.username} age : {user.age}</p>
+                            <p key={user.id}>id : {user.id} username : {user.username} age : {user.age}</p>
                         )
                     })}
                 </div>
@@ -83,16 +70,23 @@ export default function Acceuil() {
                         (user) && (
                             <div>
                                 <p>username : {user.username} age : {user.age}</p>
-                            todos :
-                                {
-                                    user.todos.map(todo => {
-                                        return (
-                                            <p key={todo.id}>todo name: {todo.name} done :
-                                                <input type="checkbox" defaultChecked={todo.done} />
-                                            </p>
-                                        )
-                                    })
-                                }
+                                <h5>Todos : </h5>
+                                <ul>
+                                    {
+                                        user.todos.map(todo => {
+                                            return (
+
+                                                <p key={todo.id}>
+                                                    <li>
+                                                        todo name: {todo.name} done :
+                                                            <input type="checkbox" defaultChecked={todo.done} />
+                                                    </li>
+                                                </p>
+
+                                            )
+                                        })
+                                    }
+                                </ul>
                             </div>
                         )
                     }
